@@ -7,7 +7,7 @@ const Layout = () => {
   return (
     <div>
       <Navbar />
-      <div className="mx-48 min-h-screen shrink-0 bottom-0 flex flex-col">
+      <div className="laptop:mx-56 mobile:mx-3 min-h-screen shrink-0 bottom-0 flex flex-col">
         <Outlet />
       </div>
       <Footer />
