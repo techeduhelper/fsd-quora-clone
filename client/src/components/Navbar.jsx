@@ -19,7 +19,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-[#ffffff] sticky top-0 right-0 w-full mobile:w-full z-50 border-b-2">
+      <nav className="bg-[#ffffff] sticky top-0 right-0 w-screen mobile:w-screen z-50 border-b-2">
         <div className="nav-item-container flex flex-row items-center mobile:mx-3 laptop:mx-56 py-1 mb-1">
           <Link
             to={"/home"}
@@ -50,18 +50,18 @@ const Navbar = () => {
               <BsBell />
             </div>
           </div>
-          <div className="search-input w-full border ml-2 flex items-center hover:outline-2 hover:outline-blue-500 cursor-pointer rounded-sm">
+          <div className="search-input border ml-2 flex items-center hover:outline-2 hover:outline-blue-500 cursor-pointer rounded-sm">
             <AiOutlineSearch size={20} className="ml-2" />
             <input
               type="search"
               name=""
               id=""
               placeholder="Search Quora"
-              className="outline-none py-1 ml-1 mobile:w-40 laptop:w-full"
+              className="outline-none py-1 ml-1 mobile:w-40"
             />
           </div>
           <div className="ml-3 flex items-center gap-3 right-0 w-full">
-            <button className="px-2 rounded-full border py-1 text-gray-500 hover:bg-slate-50 cursor-pointer w-32">
+            <button className="px-2 rounded-full border py-1 text-gray-500 hover:bg-slate-50 cursor-pointer laptop:w-32">
               Try Quora+
             </button>
             <div
@@ -113,3 +113,8 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
+// 🚀 Excited to Share My Portfolio! 🚀
+// 

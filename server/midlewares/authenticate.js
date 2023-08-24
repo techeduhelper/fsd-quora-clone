@@ -1,21 +1,14 @@
 
-import passport from 'passport';
+import JWT from 'jsonwebtoken';
 
-// Middleware that requires authentication
-export const protectedRouteMiddleware = (req, res, next) => {
-    if (req.isAuthenticated()) {
+
+// protected route using token
+export const requireSignIn = (req, res, next) => {
+    try {
+        const decode = JWT.verify(req.headers.authorization, process.env.JWT_SECRET)
         next();
-    } else {
-        res.redirect(`${process.env.FRONTEND_URL}`);
+    } catch (error) {
+        console.log(error)
     }
 };
 
-
-
-export const ensureGuest = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        res.redirect(`${process.env.FRONTEND_URL}/home`)
-    } else {
-        return next()
-    }
-}

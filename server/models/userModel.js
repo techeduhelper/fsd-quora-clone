@@ -1,13 +1,40 @@
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
+
+// const userSchema = new mongoose.Schema({
+//     googleId: String,
+//     githubId: String,
+//     displayName: String,
+//     emails: String,
+//     picture: String,
+//     accessToken: String,
+//     username: String,
+// });
+
+// export default mongoose.model('user', userSchema);
+
+
+import mongoose from 'mongoose'
+
 
 const userSchema = new mongoose.Schema({
-    googleId: String,
-    githubId: String,
-    displayName: String,
-    emails: String,
-    picture: String,
-    accessToken: String,
-    username: String,
-});
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    mobno: {
+        type: Number,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    }
 
-export default mongoose.model('user', userSchema);
+}, { timestamps: true })
+
+
+export default mongoose.model('users', userSchema)
