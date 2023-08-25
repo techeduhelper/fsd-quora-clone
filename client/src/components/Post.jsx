@@ -12,7 +12,7 @@ const Post = ({ CgProfile }) => {
           <textarea
             name=""
             id=""
-            className="w-full h-72 outline-none py-3 px-2"
+            className="w-full h-64 outline-none py-3 px-2"
             placeholder="Say something..."
           ></textarea>
         </div>

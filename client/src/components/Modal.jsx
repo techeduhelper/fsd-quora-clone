@@ -8,10 +8,11 @@ const customStyles = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "50%",
+    width: "100%",
+    maxWidth: "60%",
     height: "70%",
-    padding: "2rem",
-    overflow: "auto",
+    padding: "1rem",
+    overflow: "auto ",
     border: "none",
     borderRadius: "8px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
@@ -47,18 +48,18 @@ const Modaln = ({ isOpen, closeModal }) => {
                 This can be changed in Space settings.
               </span>
               <input
-                className="py-3 px-2 w-full mt-2 border rounded-sm"
+                className="py-3 px-2 w-full mt-1 border rounded-sm"
                 type="text"
               />
             </div>
-            <div className="flex flex-col mb-6">
+            <div className="flex flex-col mb-2">
               <label className="text-xl font-medium">Brief description</label>
               <span className="text-base text-gray-500">
                 Include a few keywords to show people what to expect if they
                 join.
               </span>
               <input
-                className="py-3 px-2 w-full mt-2 border rounded-sm"
+                className="py-3 px-2 w-full mt-1 border rounded-sm"
                 type="text"
               />
             </div>

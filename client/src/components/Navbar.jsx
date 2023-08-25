@@ -9,25 +9,37 @@ import { BsBell, BsGlobe } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/auth";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [auth, setAuth] = useAuth();
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleLogout = () => {
+    setAuth({ ...auth, user: null, token: "" });
+    localStorage.removeItem("token");
+    setTimeout(() => {
+      window.location = "/";
+    }, 500);
+    toast.success("Logout Successfully");
+  };
+
   return (
     <>
-      <nav className="bg-[#ffffff] sticky top-0 right-0 w-screen mobile:w-screen z-50 border-b-2">
-        <div className="nav-item-container flex flex-row items-center mobile:mx-3 laptop:mx-56 py-1 mb-1">
+      <nav className="bg-[#ffffff] w-full object-fill right-0 sticky top-0 z-50 border-b-2 left-0 m-0 p-0">
+        <div className="nav-item-container flex flex-row items-center mobile:mx-3 laptop:mx-56 py-1 mb-1 bg-[#ffffff] right-0">
           <Link
             to={"/home"}
-            className="logo font-['Poppins', sans-serif] text-4xl font-bold text-[#cf4644]"
+            className="logo font-['Poppins', sans-serif] text-4xl font-bold text-[#cf4644] mobile:w-full"
           >
             Quora
           </Link>
-          <div className="menu flex flex-row  items-center ml-4 text-2xl text-gray-600 laptop:gap-2 mobile:gap-1 h-full">
+          <div className="menu flex flex-row container-fluid items-center ml-4 text-2xl text-gray-600 laptop:gap-2 mobile:gap-1 h-full w-full">
             <Link
               to={"/home"}
               className="hover:bg-slate-100 px-4 py-2 cursor-pointer"
@@ -50,18 +62,18 @@ const Navbar = () => {
               <BsBell />
             </div>
           </div>
-          <div className="search-input border ml-2 flex items-center hover:outline-2 hover:outline-blue-500 cursor-pointer rounded-sm">
+          <div className="search-input w-full border ml-2 flex items-center hover:outline-2 hover:outline-blue-500 cursor-pointer rounded-sm">
             <AiOutlineSearch size={20} className="ml-2" />
             <input
               type="search"
               name=""
               id=""
               placeholder="Search Quora"
-              className="outline-none py-1 ml-1 mobile:w-40"
+              className="outline-none py-1"
             />
           </div>
-          <div className="ml-3 flex items-center gap-3 right-0 w-full">
-            <button className="px-2 rounded-full border py-1 text-gray-500 hover:bg-slate-50 cursor-pointer laptop:w-32">
+          <div className="ml-3 flex items-center gap-3 right-0">
+            <button className="px-2 text-lg  rounded-full border py-1 text-gray-500 hover:bg-slate-50 cursor-pointer truncate">
               Try Quora+
             </button>
             <div
@@ -79,13 +91,13 @@ const Navbar = () => {
                   <div className="py-1">
                     <a
                       href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
                     >
                       Dashboard
                     </a>
                     <a
-                      href="http://localhost:8080/auth/logout"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={handleLogout}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
                     >
                       Logout
                     </a>
@@ -96,8 +108,8 @@ const Navbar = () => {
             <div className="globe text-gray-600 cursor-pointer px-2 hover:bg-slate-100 py-1">
               <BsGlobe size={24} />
             </div>
-            <div className="addquestion flex w-36 justify-between items-center py-1 px-2 rounded-full bg-[#cf4644] text-white">
-              <div className="hover:bg-[#e04a48] hover:rounded-full cursor-pointer">
+            <div className="addquestion flex justify-between items-center py-1 px-2 rounded-full bg-[#cf4644] text-white">
+              <div className="hover:bg-[#e04a48] hover:rounded-full cursor-pointer truncate">
                 Add Question
               </div>
               <RiArrowDropDownLine
@@ -113,8 +125,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
-
-// 🚀 Excited to Share My Portfolio! 🚀
-// 

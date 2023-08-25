@@ -12,7 +12,7 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     width: "50%",
     height: "70%",
-    padding: "2rem",
+    padding: "1rem",
     overflow: "auto",
     border: "none",
     borderRadius: "8px",
@@ -44,7 +44,7 @@ const AddQModal = ({ isOpen, closeModal, CgProfile }) => {
         >
           <RxCross2 size={30} />
         </button>
-        <div className="flex flex-col justify-start gap-6 px-2 py-3">
+        <div className="flex flex-col justify-start gap-6 px-1 py-3">
           <div className="flex flex-row items-center w-full justify-between">
             <div
               onClick={handleswitch2}

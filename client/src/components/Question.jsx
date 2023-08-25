@@ -17,7 +17,7 @@ const Question = ({ CgProfile, closeModal }) => {
   return (
     <>
       <div className="w-full flex flex-col">
-        <div className="bg-blue-100 px-4 py-3 rounded-sm text-blue-600">
+        <div className="bg-blue-100 px-3 py-3 rounded-sm text-blue-600">
           <span className="text-lg font-bold">
             Tips on getting good answers quickly
           </span>
@@ -27,7 +27,7 @@ const Question = ({ CgProfile, closeModal }) => {
             <li>Double-check grammar and spelling</li>
           </ul>
         </div>
-        <div className="profile-container mt-10 w-full flex items-center gap-3">
+        <div className="profile-container mt-5 w-full flex items-center gap-3">
           <div className="logo text-gray-500">
             <CgProfile size={32} />
           </div>
@@ -43,7 +43,7 @@ const Question = ({ CgProfile, closeModal }) => {
             </select>
           </div>
         </div>
-        <div className="form-container mt-4 w-full border-b-2">
+        <div className="form-container mt-2 w-full border-b-2">
           <input
             onInput={checkInput}
             type="text"
@@ -53,7 +53,7 @@ const Question = ({ CgProfile, closeModal }) => {
             className="w-full text-xl outline-none py-2"
           />
         </div>
-        <div className="button bottom-0 mt-20 w-full flex justify-end gap-5">
+        <div className="button bottom-0 mt-16 w-full flex justify-end gap-5">
           <button
             onClick={closeModal}
             className="px-3 py-2 bg-blue-700  text-white rounded-full"
