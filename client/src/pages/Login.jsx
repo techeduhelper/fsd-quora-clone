@@ -51,12 +51,12 @@ const Login = () => {
         user: res.data.user,
         token: res.data.token,
       });
+      toast.success(res.data.message);
       localStorage.setItem("auth", JSON.stringify(res.data));
       navigate(location.state || "/");
       setTimeout(() => {
         navigate("/home");
       }, 500);
-      toast.success(res.data.message);
     } else {
       toast.error(res.data.message);
     }

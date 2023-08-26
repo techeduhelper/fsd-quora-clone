@@ -29,7 +29,6 @@ const Home = () => {
   function closeqModal() {
     setIsqOpen(false);
   }
-  console.log(auth);
 
   return (
     <>
@@ -57,6 +56,7 @@ const Home = () => {
             </div>
             <div className="flex w-full justify-between px-3 py-1 items-center">
               <div
+                title="Post your Question"
                 onClick={openqModal}
                 className="ask-button flex items-center justify-center hover:bg-gray-100 py-2 hover:rounded-full cursor-pointer w-full mx-2 gap-2 text-gray-700"
               >
@@ -82,7 +82,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div>{JSON.stringify(auth, null, 4)}</div>
+          <div></div>
         </div>
       </div>
     </>

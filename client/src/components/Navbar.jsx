@@ -22,7 +22,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setAuth({ ...auth, user: null, token: "" });
-    localStorage.removeItem("token");
+    localStorage.removeItem("auth");
     setTimeout(() => {
       window.location = "/";
     }, 500);
