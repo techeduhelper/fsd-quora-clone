@@ -1,5 +1,4 @@
-// import session from 'express-session';
-// import passport from './Passport.js'
+
 import express from 'express';
 import cors from 'cors';
 import { connectDB } from './db.js';
@@ -12,15 +11,8 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
-// app.use(session({
-//     secret: 'quoraclone',
-//     resave: false,
-//     saveUninitialized: false,
-// }));
-// app.use(passport.initialize());
-// app.use(passport.session());
 
 
 

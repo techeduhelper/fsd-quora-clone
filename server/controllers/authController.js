@@ -6,7 +6,7 @@ import JWT from 'jsonwebtoken'
 //Register Controller || POST Request
 export const registerController = async (req, res) => {
     try {
-        const { name, email, mobno, password } = req.body
+        const { name, email, mobno, password, photo } = req.body
         if (!name) {
             return res.send({ message: "Name is Required" })
         }
@@ -29,7 +29,7 @@ export const registerController = async (req, res) => {
         }
         const hassedPassword = await hassPassword(password)
 
-        const user = await userModel({ name, email, mobno, password: hassedPassword }).save()
+        const user = await userModel({ name, email, mobno, photo, password: hassedPassword }).save()
 
         res.status(200).send({
             success: true,
@@ -75,7 +75,8 @@ export const loginController = async (req, res) => {
             user: {
                 name: user.name,
                 email: user.email,
-                mobno: user.mobno
+                mobno: user.mobno,
+                photo: user.photo
             },
             token
         })
@@ -91,9 +92,3 @@ export const loginController = async (req, res) => {
     }
 }
 
-
-
-
-export const protectedRoute = (req, res) => {
-    res.send("protected route")
-}

@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { useAuth } from "../context/auth";
 
 const Question = ({ CgProfile, closeModal }) => {
+  const [auth, setAuth] = useAuth();
+
   function checkInput() {
     const userInput = document.getElementById("userInput").value;
     const submitButton = document.getElementById("submitButton");
@@ -29,7 +32,15 @@ const Question = ({ CgProfile, closeModal }) => {
         </div>
         <div className="profile-container mt-5 w-full flex items-center gap-3">
           <div className="logo text-gray-500">
-            <CgProfile size={32} />
+            {auth.user.photo ? (
+              <img
+                src={auth.user.photo}
+                alt=""
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            ) : (
+              <CgProfile size={32} />
+            )}
           </div>
           <div>
             <select

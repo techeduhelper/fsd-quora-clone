@@ -33,7 +33,7 @@ const Home = () => {
   return (
     <>
       <div className="whole-body w-full flex gap-3 mt-3 right-0 laptop:flex-row mobile:flex-col">
-        <div className="left-sidebar laptop:fixed flex justify-start h-screen laptop:w-[12rem] laptop:flex-col mobile:flex-row mobile:w-full mobile:h-20">
+        <div className="left-sidebar laptop:fixed flex justify-start h-screen laptop:w-[9rem] laptop:flex-col mobile:flex-row mobile:w-full mobile:h-20">
           <div
             onClick={openModal}
             className="space-container laptop:w-[90%] flex items-center px-2 py-3 text-sm rounded-sm bg-gray-200 font-medium justify-center mt-2 cursor-pointer gap-1 text-gray-600"
@@ -43,10 +43,19 @@ const Home = () => {
           <Modaln closeModal={closeModal} isOpen={isOpen} />
           <LeftNavMenu />
         </div>
-        <div className="main-scroll-body laptop:ml-[12rem] laptop:w-[600px] mobile:w-full">
+        <div className="main-scroll-body laptop:ml-[9rem] laptop:w-[600px] mobile:w-full">
           <div className="question-bar bg-white w-full border rounded-sm p-2">
             <div className="input-profile-container w-full flex items-center gap-3 py-1 px-3">
-              <CgProfile size={36} className="text-gray-600" />
+              {auth.user.photo ? (
+                <img
+                  src={auth.user.photo}
+                  alt=""
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+              ) : (
+                <CgProfile size={36} className="text-gray-600" />
+              )}
+
               <div
                 onClick={openqModal}
                 className="w-full bg-gray-100 text-gray-500 py-2 rounded-full pl-2 border truncate"

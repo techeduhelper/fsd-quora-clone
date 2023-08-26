@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+import { useAuth } from "../context/auth";
 
 const Post = ({ CgProfile }) => {
+  const [auth, setAuth] = useAuth();
   return (
     <>
       <div className="flex flex-col h-full w-full">
         <div className="logo flex items-center gap-2 h-10">
-          <CgProfile size={35} />
-          <span className="text-xl">User name</span>
+          {auth.user.photo ? (
+            <img
+              src={auth.user.photo}
+              alt=""
+              className="w-8 h-8 rounded-full object-cover"
+            />
+          ) : (
+            <CgProfile size={35} />
+          )}
+
+          <span className="text-xl">{auth.user.name}</span>
         </div>
         <div className="h-full">
           <textarea

@@ -6,7 +6,7 @@ export default {
   ],
   theme: {
     screens: {
-      'mobile': '440px',
+      'mobile': '340px',
       // => @media (min-width: 640px) { ... }
 
       'laptop': '1024px',

@@ -29,17 +29,19 @@ const Navbar = () => {
     toast.success("Logout Successfully");
   };
 
+  console.log(auth);
+
   return (
     <>
       <nav className="bg-[#ffffff] w-full object-fill right-0 sticky top-0 z-50 border-b-2 left-0 m-0 p-0">
         <div className="nav-item-container flex flex-row items-center mobile:mx-3 laptop:mx-56 py-1 mb-1 bg-[#ffffff] right-0">
           <Link
             to={"/home"}
-            className="logo font-['Poppins', sans-serif] text-4xl font-bold text-[#cf4644] mobile:w-full"
+            className="logo font-['Poppins', sans-serif] text-4xl font-bold text-[#cf4644] "
           >
             Quora
           </Link>
-          <div className="menu flex flex-row container-fluid items-center ml-4 text-2xl text-gray-600 laptop:gap-2 mobile:gap-1 h-full w-full">
+          <div className="menu flex flex-row container-fluid items-center ml-5 text-2xl text-gray-600 laptop:gap-2 mobile:gap-1 h-full w-full">
             <Link
               to={"/home"}
               className="hover:bg-slate-100 px-4 py-2 cursor-pointer"
@@ -79,8 +81,18 @@ const Navbar = () => {
             <div
               onClick={togglePopup}
               className="profile text-gray-600 cursor-pointer hover:bg-slate-100 py-1 px-2"
+              title={auth.user.name}
             >
-              <CgProfile size={25} />
+              {auth.user.photo ? (
+                <img
+                  src={auth.user.photo}
+                  alt="profile pic"
+                  className="w-10 h-7 rounded-full object-center"
+                />
+              ) : (
+                <CgProfile size={25} />
+              )}
+
               {isOpen && (
                 <div className="absolute w-60 mt-6 -ml-28 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
                   <BiSolidDownArrow
@@ -89,12 +101,12 @@ const Navbar = () => {
                     size={20}
                   />
                   <div className="py-1">
-                    <a
-                      href="#"
+                    <Link
+                      to={"/home/dashboard"}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
                     >
-                      Dashboard
-                    </a>
+                      {auth.user.name}
+                    </Link>
                     <a
                       onClick={handleLogout}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-semibold"
