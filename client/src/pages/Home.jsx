@@ -1,4 +1,4 @@
-import react, { useState } from "react";
+import react, { useState, useEffect } from "react";
 import React from "react";
 import { CgProfile } from "react-icons/cg";
 import { AiOutlinePlus, AiOutlineEdit } from "react-icons/ai";
@@ -8,11 +8,24 @@ import LeftNavMenu from "../components/LeftNavMenu";
 import Modaln from "../components/Modal";
 import AddQModal from "../components/AddQModal";
 import { useAuth } from "../context/auth";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 const Home = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isqOpen, setIsqOpen] = useState(false);
   const [auth, setAuth] = useAuth();
+  const [post, setPost] = useState();
+  const [loading, setLoading] = useState(false);
+
+  // for short description
+  const [fullDescription, setFullDescription] = useState(false);
+
+  // toggle description
+  const toggleDescription = () => {
+    setFullDescription(!shortDescription);
+  };
 
   function openModal() {
     setIsOpen(true);
@@ -29,6 +42,33 @@ const Home = () => {
   function closeqModal() {
     setIsqOpen(false);
   }
+  // useEfeect hooks
+  useEffect(() => {
+    getAllPost();
+    // const interval = setInterval(getAllAgain, 30000);
+    // return () => clearInterval(interval);
+  }, []);
+  // First Time fetch post
+  const getAllPost = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get("/quora/v1/post/all-post");
+      setPost(res.data.post);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // post fetch without refresh
+  // const getAllAgain = async () => {
+  //   try {
+  //     const res = await axios.get("/quora/v1/post/all-post");
+  //     const newPost = res.data.post;
+  //     setPost([...newPost]);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>
@@ -45,7 +85,7 @@ const Home = () => {
         </div>
         <div className="main-scroll-body laptop:ml-[9rem] laptop:w-[600px] mobile:w-full">
           <div className="question-bar bg-white w-full border rounded-sm p-2">
-            <div className="input-profile-container w-full flex items-center gap-3 py-1 px-3">
+            <div className="input-profile-container w-full flex items-center gap-3 py-1 px-1">
               {auth.user.photo ? (
                 <img
                   src={auth.user.photo}
@@ -91,7 +131,49 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div></div>
+          {/* All post loop here */}
+          {loading ? (
+            <Spinner />
+          ) : (
+            <div className="grid grid-cols-1 gap-3 mt-3">
+              {post?.map((p) => (
+                <div key={p.id} className="bg-[#ffffff] rounded-sm">
+                  <div className="profile-tag-container flex gap-3 items-center px-3 py-3">
+                    <img
+                      src={p.author.photo}
+                      alt=""
+                      className="h-10 w-10 rounded-full"
+                    />
+                    <Link>{p.author.name}</Link>
+                  </div>
+                  <div className="px-3 pt-[0.8px]">
+                    <div className="text-lg font-semibold leading-none text-black">
+                      {p.title}
+                    </div>
+                    <div
+                      className={
+                        fullDescription
+                          ? "full-description"
+                          : "short-description"
+                      }
+                    >
+                      {p.description}
+                      {!fullDescription && (
+                        <button onClick={toggleDescription}>
+                          See more details
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <img
+                    src={p.photo}
+                    alt="post-photo"
+                    className="h-[24rem] w-full mt-2"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </>

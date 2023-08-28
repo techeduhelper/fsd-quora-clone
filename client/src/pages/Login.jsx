@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/auth";
+import Spinner from "../components/Spinner";
 
 const Login = () => {
   // register input value
@@ -17,6 +18,7 @@ const Login = () => {
   const [lpassword, setLpassword] = useState("");
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
+  const [loadingLogin, setLoadingLogin] = useState(false);
 
   // get URl from Photo
   const handlePhoto = (e) => {
@@ -60,6 +62,7 @@ const Login = () => {
   // For login || POST Method
   const loginHandler = async (e) => {
     e.preventDefault();
+    setLoadingLogin(true);
     const res = await axios.post("/quora/v1/auth/login", {
       email: lemail,
       password: lpassword,
@@ -70,6 +73,7 @@ const Login = () => {
         user: res.data.user,
         token: res.data.token,
       });
+      setLoadingLogin(false);
       toast.success(res.data.message);
       localStorage.setItem("auth", JSON.stringify(res.data));
       navigate(location.state || "/");
@@ -143,7 +147,7 @@ const Login = () => {
                 type="submit"
                 className="bg-[#cf4644] border rounded-md p-2 text-white"
               >
-                {loading ? "Please wait.." : "Register"}
+                {loading ? <Spinner /> : "Register"}
               </button>
             </form>
           </div>
@@ -177,7 +181,7 @@ const Login = () => {
                 type="submit"
                 className="bg-[#cf4644] border rounded-md p-2 text-white"
               >
-                LogIn
+                {loadingLogin ? <Spinner /> : "LogIn"}
               </button>
             </form>
           </div>

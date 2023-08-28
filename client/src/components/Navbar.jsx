@@ -8,28 +8,37 @@ import { BiDetail, BiEditAlt, BiSolidDownArrow } from "react-icons/bi";
 import { BsBell, BsGlobe } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth";
 import toast from "react-hot-toast";
+import AddQModal from "./AddQModal";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [auth, setAuth] = useAuth();
+  const [quesOpen, setQuesOpen] = useState(false);
+  const navigate = useNavigate();
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleOpen = () => {
+    setQuesOpen(true);
+  };
+
+  const toogleClose = () => {
+    setQuesOpen(false);
   };
 
   const handleLogout = () => {
     setAuth({ ...auth, user: null, token: "" });
     localStorage.removeItem("auth");
     setTimeout(() => {
-      window.location = "/";
+      navigate("/");
     }, 500);
     toast.success("Logout Successfully");
   };
-
-  console.log(auth);
 
   return (
     <>
@@ -121,7 +130,10 @@ const Navbar = () => {
               <BsGlobe size={24} />
             </div>
             <div className="addquestion flex justify-between items-center py-1 px-2 rounded-full bg-[#cf4644] text-white">
-              <div className="hover:bg-[#e04a48] hover:rounded-full cursor-pointer truncate">
+              <div
+                onClick={toggleOpen}
+                className="hover:bg-[#e04a48] hover:rounded-full cursor-pointer truncate"
+              >
                 Add Question
               </div>
               <RiArrowDropDownLine
@@ -129,6 +141,7 @@ const Navbar = () => {
                 className="ml-1 border-l-[0.1px] border-black"
               />
             </div>
+            <AddQModal isOpen={quesOpen} closeModal={toogleClose} />
           </div>
         </div>
       </nav>

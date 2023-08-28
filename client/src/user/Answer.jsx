@@ -4,7 +4,7 @@ import Dashboard from "./Dashboard";
 const Answer = () => {
   return (
     <>
-      <div className="bg-black h-screen w-full flex items-center">Answer</div>
+      <div>Answer</div>
     </>
   );
 };

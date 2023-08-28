@@ -3,7 +3,7 @@ import { useAuth } from "../context/auth.jsx";
 import { Outlet } from "react-router-dom";
 import axios from "axios";
 import React from "react";
-import Login from "../pages/Login.jsx";
+import Spinner from "./../components/Spinner";
 
 export const Private = () => {
   const [ok, setOk] = useState();
@@ -20,5 +20,5 @@ export const Private = () => {
     };
     if (auth?.token) checkAuth();
   }, [auth?.token]);
-  return ok ? <Outlet /> : <Login />;
+  return ok ? <Outlet /> : <Spinner />;
 };

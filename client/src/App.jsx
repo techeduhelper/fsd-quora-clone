@@ -31,8 +31,10 @@ function App() {
       <Router>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={auth ? <Private /> : <Login />} />
-            <Route path="/" element={<Login />} />
+            <Route
+              path="/"
+              element={auth.user ? <Navigate to="/home" /> : <Login />}
+            />
             <Route path="/home" element={<Private />}>
               <Route path="" element={<Layout />}>
                 <Route path="" element={<Home />} />
