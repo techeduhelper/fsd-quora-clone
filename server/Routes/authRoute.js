@@ -1,13 +1,15 @@
 import express from 'express';
-// import passport from '../Passport.js';
+import multer from 'multer';
 import { loginController, registerController } from '../controllers/authController.js';
 import { requireSignIn } from './../midlewares/authenticate.js';
 
 
 const router = express.Router();
 
+const upload = multer({ dest: 'profile/' });
+
 // Register Routes  || POST Method
-router.post('/register', registerController)
+router.post('/register', upload.single('photo'), registerController)
 
 // Login Routes || POST Method
 router.post('/login', loginController)

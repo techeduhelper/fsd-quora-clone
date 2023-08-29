@@ -11,20 +11,22 @@ import { useAuth } from "../context/auth";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import AnswerSection from "../components/AnswerSection";
+import PostVoteSection from "../components/PostVoteSection";
 
 const Home = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isqOpen, setIsqOpen] = useState(false);
   const [auth, setAuth] = useAuth();
-  const [post, setPost] = useState();
   const [loading, setLoading] = useState(false);
+  const [combinedData, setCombinedData] = useState([]);
 
   // for short description
   const [fullDescription, setFullDescription] = useState(false);
 
   // toggle description
   const toggleDescription = () => {
-    setFullDescription(!shortDescription);
+    setFullDescription(!fullDescription);
   };
 
   function openModal() {
@@ -43,23 +45,43 @@ const Home = () => {
     setIsqOpen(false);
   }
   // useEfeect hooks
+
   useEffect(() => {
-    getAllPost();
-    // const interval = setInterval(getAllAgain, 30000);
-    // return () => clearInterval(interval);
-  }, []);
-  // First Time fetch post
-  const getAllPost = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get("/quora/v1/post/all-post");
-      setPost(res.data.post);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
+    async function fetchData() {
+      try {
+        const response1 = await axios.get("/quora/v1/post/all-post");
+        const response2 = await axios.get("/quora/v1/question/get-question");
+        const arrayResponse1 = response1.data.post || [];
+        const arrayResponse2 = response2.data.question || [];
+
+        const combined = [...arrayResponse1, ...arrayResponse2];
+
+        combined.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+        setCombinedData(combined.reverse());
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     }
-  };
-  // post fetch without refresh
+
+    fetchData();
+    setInterval(() => {
+      fetchData();
+    }, 15000);
+  }, []);
+
+  // // First Time fetch post
+  // const getAllPost = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const res = await axios.get("/quora/v1/post/all-post");
+  //     setPost(res.data.post);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // // post fetch without refresh
   // const getAllAgain = async () => {
   //   try {
   //     const res = await axios.get("/quora/v1/post/all-post");
@@ -70,10 +92,36 @@ const Home = () => {
   //   }
   // };
 
+  // // First time question fetch
+  // const getAllQuestion = async () => {
+  //   try {
+  //     const res = await axios.get("/quora/v1/question/get-question");
+  //     setQuestion(res.data.question);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // format created date and time to proper format
+  const formatDateTime = (dateTimeString) => {
+    const options = {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    const formattedDateTime = new Date(dateTimeString).toLocaleDateString(
+      "en-US",
+      options
+    );
+    return formattedDateTime;
+  };
   return (
     <>
-      <div className="whole-body w-full flex gap-3 mt-3 right-0 laptop:flex-row mobile:flex-col">
-        <div className="left-sidebar laptop:fixed flex justify-start h-screen laptop:w-[9rem] laptop:flex-col mobile:flex-row mobile:w-full mobile:h-20">
+      {/* 3-partition  */}
+      <div className="whole-body w-full flex gap-3 mt-3 right-0 laptop:flex-row mobile:flex-col mb-5">
+        <div className="left-sidebar laptop:fixed flex justify-start h-screen laptop:w-[9rem] laptop:flex-col mobile:flex-row mobile:w-full mobile:h-20 mobile:hidden laptop:block">
           <div
             onClick={openModal}
             className="space-container laptop:w-[90%] flex items-center px-2 py-3 text-sm rounded-sm bg-gray-200 font-medium justify-center mt-2 cursor-pointer gap-1 text-gray-600"
@@ -131,24 +179,34 @@ const Home = () => {
               </div>
             </div>
           </div>
+
           {/* All post loop here */}
           {loading ? (
             <Spinner />
           ) : (
             <div className="grid grid-cols-1 gap-3 mt-3">
-              {post?.map((p) => (
-                <div key={p.id} className="bg-[#ffffff] rounded-sm">
+              {combinedData?.map((p) => (
+                <div className="bg-[#ffffff] rounded-sm" key={p._id}>
                   <div className="profile-tag-container flex gap-3 items-center px-3 py-3">
-                    <img
-                      src={p.author.photo}
-                      alt=""
-                      className="h-10 w-10 rounded-full"
-                    />
-                    <Link>{p.author.name}</Link>
+                    {p?.author?.photo ? (
+                      <img
+                        src={p.author.photo}
+                        alt=""
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                    ) : (
+                      <CgProfile size={35} />
+                    )}
+                    <div className="flex flex-col">
+                      <Link>{p.author.name}</Link>
+                      <p className="text-xs text-gray-500">
+                        {formatDateTime(p.createdAt)}
+                      </p>
+                    </div>
                   </div>
                   <div className="px-3 pt-[0.8px]">
-                    <div className="text-lg font-semibold leading-none text-black">
-                      {p.title}
+                    <div className="text-lg font-semibold leading-none text-black mb-2">
+                      {p.title ? p.title : p.question}
                     </div>
                     <div
                       className={
@@ -157,19 +215,37 @@ const Home = () => {
                           : "short-description"
                       }
                     >
-                      {p.description}
-                      {!fullDescription && (
-                        <button onClick={toggleDescription}>
-                          See more details
-                        </button>
-                      )}
+                      {p.description ? p.description : null}
                     </div>
+                    {p.description ? (
+                      !fullDescription ? (
+                        <button
+                          className="text-blue-800 text-lg font-medium float-right"
+                          onClick={toggleDescription}
+                        >
+                          (more)
+                        </button>
+                      ) : (
+                        <button
+                          className="text-blue-800 text-lg font-medium float-right"
+                          onClick={toggleDescription}
+                        >
+                          (hide details)
+                        </button>
+                      )
+                    ) : null}
                   </div>
                   <img
-                    src={p.photo}
-                    alt="post-photo"
-                    className="h-[24rem] w-full mt-2"
+                    src={p.photo ? p.photo : null}
+                    className=" w-full mt-2"
                   />
+                  <div>
+                    {p.question ? (
+                      <AnswerSection />
+                    ) : (
+                      <PostVoteSection postId={p._id} />
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

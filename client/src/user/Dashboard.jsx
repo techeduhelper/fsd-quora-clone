@@ -4,9 +4,10 @@ import { Link, Outlet } from "react-router-dom";
 
 const Dashboard = () => {
   const [auth, setAuth] = useAuth();
+
   return (
     <>
-      <div className="w-full h-auto">
+      <div className="laptop:w-full mobile:w-full h-auto">
         <div className="profile-container mt-5 flex items-center gap-4">
           <img
             src={auth.user.photo}

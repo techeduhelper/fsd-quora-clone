@@ -2,17 +2,20 @@ import React, { useState } from "react";
 import { useAuth } from "../context/auth";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Spinner from "./Spinner";
 
-const Post = ({ CgProfile }) => {
+const Post = ({ CgProfile, closeModal }) => {
   const [auth, setAuth] = useAuth();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // Post send on api || POST Method
   const handlePost = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const res = await axios.post(
         "/quora/v1/post/create-post",
         { title, description, photo },
@@ -26,6 +29,10 @@ const Post = ({ CgProfile }) => {
       setDescription("");
       setTitle("");
       setPhoto(null);
+      setLoading(false);
+      setTimeout(() => {
+        closeModal();
+      }, 500);
     } catch (error) {
       const errorMessage = error.res.data.message || "An error occurred";
       toast.error(errorMessage);
@@ -71,7 +78,7 @@ const Post = ({ CgProfile }) => {
             onClick={handlePost}
             className="bg-blue-600 text-white px-5 text-lg py-2 rounded-full "
           >
-            Post
+            {loading ? <Spinner /> : "Post"}
           </button>
         </div>
       </div>

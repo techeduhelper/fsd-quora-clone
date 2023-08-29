@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Spacebox from "../components/Space-box";
 import Modaln from "../components/Modal";
 import { Link } from "react-router-dom";
+import DiscoverSpace from "../components/DiscoverSpace";
 
 const Spaces = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,7 @@ const Spaces = () => {
 
   return (
     <>
-      <div className="h-full">
+      <div className="h-full mb-5">
         <div className="create-space flex flex-col justify-start mt-4 bg-[url('../assets/ilustrator.png')] bg-right-top bg-contain bg-no-repeat w-full px-4 py-4 shadow-md bg-white gap-4 rounded-sm mb-8">
           <span className="text-2xl font-semibold">Welcome to Spaces!</span>
           <span className="text-gray-600">
@@ -37,13 +38,14 @@ const Spaces = () => {
             </a>
           </div>
         </div>
+        <span className="text-2xl font-bold mb-2">Your spaces</span>
+        <Spacebox />
         <div className="mb-4">
           <span className="text-2xl font-bold">Discover Spaces</span>
         </div>
         <div className="flex flex-col gap-8" id="discover">
           <span>Spaces you might like</span>
-          <Spacebox />
-          <Spacebox />
+          <DiscoverSpace />
         </div>
         <Modaln closeModal={closeModal} isOpen={isOpen} />
       </div>

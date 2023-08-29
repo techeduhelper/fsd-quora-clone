@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/auth";
 import Spinner from "../components/Spinner";
+import { Toaster } from "react-hot-toast";
 
 const Login = () => {
   // register input value
@@ -20,12 +21,14 @@ const Login = () => {
   const navigate = useNavigate();
   const [loadingLogin, setLoadingLogin] = useState(false);
 
-  // get URl from Photo
-  const handlePhoto = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => setPhoto(e.target.result);
-    reader.readAsDataURL(file);
+  // for switch login and register
+  const [switchl, setSwitchL] = useState(false);
+
+  const handleSwitch = () => {
+    setSwitchL(true);
+  };
+  const handleSwitchLogin = () => {
+    setSwitchL(false);
   };
 
   // For Register || POST Method
@@ -33,29 +36,51 @@ const Login = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await axios.post("/quora/v1/auth/register", {
-        name,
-        email,
-        mobno,
-        password,
-        photo,
-      });
+      const res = await axios.post(
+        "/quora/v1/auth/register",
+        {
+          name,
+          email,
+          mobno,
+          password,
+          photo,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       if (res && res.data.success) {
         setLoading(false);
-        toast.success(res.data && res.data.message);
-        setPhoto([]);
+        toast.success(res.data && res.data.message, {
+          icon: "👏",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+        setPhoto(null);
         setEmail("");
         setPassword("");
         setName("");
         setMobno("");
         setTimeout(() => {
-          navigate("/");
+          handleSwitchLogin();
         }, 500);
       } else {
-        toast.error(res.data && res.data.message);
+        toast.error(res.data && res.data.message, {
+          icon: "😪",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
       }
     } catch (error) {
-      toast.error();
+      toast.error(res.data.message);
     }
   };
 
@@ -63,39 +88,65 @@ const Login = () => {
   const loginHandler = async (e) => {
     e.preventDefault();
     setLoadingLogin(true);
-    const res = await axios.post("/quora/v1/auth/login", {
-      email: lemail,
-      password: lpassword,
-    });
-    if (res && res.data.success) {
-      setAuth({
-        ...auth,
-        user: res.data.user,
-        token: res.data.token,
+    try {
+      const res = await axios.post("/quora/v1/auth/login", {
+        email: lemail,
+        password: lpassword,
       });
+
+      if (res && res.data.success) {
+        setAuth({
+          ...auth,
+          user: res.data.user,
+          token: res.data.token,
+        });
+        setLoadingLogin(false);
+        toast.success(res.data.message, {
+          icon: "👏",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+        localStorage.setItem("auth", JSON.stringify(res.data));
+        navigate(location.state || "/");
+        setTimeout(() => {
+          navigate("/home");
+        }, 500);
+      } else {
+        setLoadingLogin(false);
+        toast.error(res.data.message);
+      }
+    } catch (error) {
       setLoadingLogin(false);
-      toast.success(res.data.message);
-      localStorage.setItem("auth", JSON.stringify(res.data));
-      navigate(location.state || "/");
-      setTimeout(() => {
-        navigate("/home");
-      }, 500);
-    } else {
-      toast.error(res.data.message);
+      const errorMessage = error.response
+        ? error.response.data.message
+        : "Error in log in. Please try again.";
+      toast.error(errorMessage, {
+        icon: "😥",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      console.error(error);
     }
   };
   return (
     <>
-      <div className="login-container flex flex-col items-center laptop:h-[70vh] mobile:h-full w-auto  mx-auto laptop:mt-32 mobile:mt-o bg-[#ffffff] laptop:w-[80%] mobile:w-full rounded-sm">
+      <Toaster position="top-center" />
+      <div className="login-container flex flex-col items-center laptop:h-[65vh] mobile:h-screen  mx-auto laptop:mt-32 mobile:mt-auto bg-[#ffffff] laptop:w-[40%] mobile:w-full rounded-sm">
         <div className="qoura-logo text-4xl font-extrabold text-[#cf4644] outline-2 mt-5 underline">
           Quora-Clone
         </div>
-        <div className="flex justify-center w-full mt-10 px-5 laptop:flex-row mobile:flex-col ">
+        {switchl ? (
           <div className="register-container w-full px-4 text-center">
-            <span className="text-[2rem] font-semibold underline">
-              Register Here
-            </span>
-            <form className="flex flex-col gap-4 mt-5" onSubmit={resgisterUser}>
+            <form
+              className="flex flex-col gap-4 mt-16 mb-3"
+              onSubmit={resgisterUser}
+            >
               <input
                 className="w-auto border border-gray-200 rounded-md p-2"
                 type="text"
@@ -140,22 +191,35 @@ const Login = () => {
                 className="text-md bg-stone-200 hover:bg-stone-300 py-2 text-center rounded-md"
                 htmlFor="fileUpload"
               >
-                <input type="file" onChange={handlePhoto} />
+                <input
+                  type="file"
+                  onChange={(e) => setPhoto(e.target.files[0])}
+                />
                 Upload Profile Photo
               </label>
               <button
                 type="submit"
-                className="bg-[#cf4644] border rounded-md p-2 text-white"
+                className="bg-[#982725] border rounded-md p-2 text-white"
               >
                 {loading ? <Spinner /> : "Register"}
               </button>
             </form>
-          </div>
-          <div className="login-container w-full px-4 mobile:mt-8 text-center">
-            <span className="text-[2rem] font-semibold underline">
-              Login Here
+            <span className="mt-5">
+              Already Have an account{" "}
+              <span
+                onClick={handleSwitchLogin}
+                className="text-red-500 cursor-pointer"
+              >
+                Login Here
+              </span>{" "}
             </span>
-            <form className="flex flex-col gap-5 mt-5" onSubmit={loginHandler}>
+          </div>
+        ) : (
+          <div className="login-container w-full px-4 mobile:mt-8 text-center">
+            <form
+              className="flex flex-col gap-5 mt-20 mb-3"
+              onSubmit={loginHandler}
+            >
               <input
                 className="w-auto border border-gray-200 rounded-md p-2"
                 type="email"
@@ -184,8 +248,17 @@ const Login = () => {
                 {loadingLogin ? <Spinner /> : "LogIn"}
               </button>
             </form>
+            <span>
+              Not account! please{" "}
+              <span
+                onClick={handleSwitch}
+                className="text-red-500 cursor-pointer"
+              >
+                Register Here
+              </span>{" "}
+            </span>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

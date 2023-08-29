@@ -10,7 +10,8 @@ const customStyles = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "50%",
+    width: "100%",
+    maxWidth: "60%",
     height: "70%",
     padding: "1rem",
     overflow: "auto",
@@ -62,7 +63,7 @@ const AddQModal = ({ isOpen, closeModal, CgProfile }) => {
           {!switchmode ? (
             <Question CgProfile={CgProfile} closeModal={closeModal} />
           ) : (
-            <Post CgProfile={CgProfile} />
+            <Post CgProfile={CgProfile} closeModal={closeModal} />
           )}
         </div>
       </Modal>

@@ -2,23 +2,23 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const Spacebox = () => {
+const DiscoverSpace = () => {
   const [space, setSpace] = useState([]);
 
   useEffect(() => {
-    const getSpace = async () => {
+    const getOtherSpace = async () => {
       try {
-        const res = await axios.get("/quora/v1/space/get-space");
+        const res = await axios.get("/quora/v1/space/get-other-space");
         setSpace(res.data.space);
       } catch (error) {
         toast.error("Error in getting space", error);
       }
     };
-    getSpace();
+    getOtherSpace();
   }, []);
   return (
     <>
-      <div className="grid gap-3 mobile:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-5 mt-2 mb-3">
+      <div className="grid gap-3 mobile:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-5">
         {space.map((s) => (
           <div
             key={s._id}
@@ -39,4 +39,4 @@ const Spacebox = () => {
   );
 };
 
-export default Spacebox;
+export default DiscoverSpace;

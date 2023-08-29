@@ -41,7 +41,10 @@ export const createPostController = async (req, res) => {
 // get all place anyone can see
 export const getAllPostController = async (req, res) => {
     try {
-        const allPost = await postModel.find().sort({ createdAt: -1 }).populate('author', 'name photo');;
+        const allPost = await postModel.find().sort({ createdAt: -1 }).populate({
+            path: "author",
+            select: "name photo"
+        });;
         res.status(200).json({
             success: true,
             message: "All places fetched successfully",
@@ -57,3 +60,75 @@ export const getAllPostController = async (req, res) => {
     }
 }
 
+
+
+// Get post added by particullar user
+export const getPost = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const post = await postModel.find({ author: userId }).sort({ createdAt: -1 });
+        res.status(200).send({
+            success: true,
+            message: "your added post",
+            post
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+
+
+// Delete Post 
+export const deletePostController = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const deletedPost = await postModel.findByIdAndDelete(id);
+
+        if (!deletedPost) {
+            return res.status(404).json({
+                success: false,
+                message: "No Post found given ID",
+            });
+        }
+        return res.json({
+            success: true,
+            message: "Post deleted successfully",
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while deleting the place",
+            error,
+        });
+    }
+};
+
+
+
+
+// Search post using keyword
+export const searchPostController = async (req, res) => {
+    try {
+        const { keyword } = req.query;
+
+        const posts = await postModel.find({
+            $or: [
+                { title: { $regex: keyword, $options: 'i' } },
+                { content: { $regex: keyword, $options: 'i' } },
+            ],
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Posts found",
+            posts,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "An error occurred while searching for posts",
+            error: error.message,
+        });
+    }
+};

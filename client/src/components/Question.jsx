@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/auth";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Question = ({ CgProfile, closeModal }) => {
   const [auth, setAuth] = useAuth();
+  const [question, setQuestion] = useState("");
 
   function checkInput() {
     const userInput = document.getElementById("userInput").value;
@@ -16,6 +19,21 @@ const Question = ({ CgProfile, closeModal }) => {
       submitButton.style.backgroundColor = "lightgrey";
     }
   }
+
+  // Create question by user
+  const questionPost = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("/quora/v1/question/create-question", { question });
+      toast.success("Your question is now live");
+      setQuestion("");
+      setTimeout(() => {
+        closeModal();
+      }, 500);
+    } catch (error) {
+      toast.error("please add a question");
+    }
+  };
 
   return (
     <>
@@ -62,6 +80,8 @@ const Question = ({ CgProfile, closeModal }) => {
             id="userInput"
             placeholder="Start your question with , What , How, Why , etc."
             className="w-full text-xl outline-none py-2"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
           />
         </div>
         <div className="button bottom-0 mt-16 w-full flex justify-end gap-5">
@@ -73,7 +93,8 @@ const Question = ({ CgProfile, closeModal }) => {
           </button>
           <button
             id="submitButton"
-            className="px-3 py-2 bg-blue-700 text-white rounded-full"
+            className="px-3 py-2 bg-blue-700 text-white rounded-full hover:bg-blue-600"
+            onClick={questionPost}
           >
             Add question
           </button>

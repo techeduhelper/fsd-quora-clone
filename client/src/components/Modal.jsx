@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import { RxCross2 } from "react-icons/rx";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const customStyles = {
   content: {
@@ -25,6 +27,27 @@ const customStyles = {
 };
 
 const Modaln = ({ isOpen, closeModal }) => {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleSpace = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/quora/v1/space/create-space", {
+        name,
+        description,
+      });
+      toast.success("Space Successfully Created");
+      setName("");
+      setDescription("");
+      setTimeout(() => {
+        closeModal();
+      }, 500);
+    } catch (error) {
+      toast.error("Error in space Creating");
+    }
+  };
+
   return (
     <>
       <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
@@ -50,6 +73,8 @@ const Modaln = ({ isOpen, closeModal }) => {
               <input
                 className="py-3 px-2 w-full mt-1 border rounded-sm"
                 type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="flex flex-col mb-2">
@@ -61,6 +86,8 @@ const Modaln = ({ isOpen, closeModal }) => {
               <input
                 className="py-3 px-2 w-full mt-1 border rounded-sm"
                 type="text"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </div>
             <hr />
@@ -68,6 +95,7 @@ const Modaln = ({ isOpen, closeModal }) => {
               <button
                 type="submit"
                 className="text-xl px-8 py-3 bg-blue-400 text-white rounded-full"
+                onClick={handleSpace}
               >
                 Create
               </button>

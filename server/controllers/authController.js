@@ -1,7 +1,7 @@
 import userModel from "../models/userModel.js"
 import { comparePassword, hassPassword } from './../helpers/authHelper.js';
 import JWT from 'jsonwebtoken'
-
+import cloudinary from 'cloudinary';
 
 //Register Controller || POST Request
 export const registerController = async (req, res) => {
@@ -27,9 +27,12 @@ export const registerController = async (req, res) => {
                 message: "Already Register please login"
             })
         }
+        const result = await cloudinary.uploader.upload(req.file.path, {
+            folder: 'quora-profile/',
+        });
         const hassedPassword = await hassPassword(password)
 
-        const user = await userModel({ name, email, mobno, photo, password: hassedPassword }).save()
+        const user = await userModel({ name, email, mobno, photo: result.url, password: hassedPassword }).save()
 
         res.status(200).send({
             success: true,
@@ -56,7 +59,7 @@ export const loginController = async (req, res) => {
         }
         const user = await userModel.findOne({ email })
         if (!user) {
-            throw new Error("Email not found")
+            return res.status(404).send({ message: "Email not found" })
         }
 
         const matchPassword = await comparePassword(password, user.password)
@@ -66,7 +69,6 @@ export const loginController = async (req, res) => {
                 message: "Incorrect Password"
             })
         }
-
         const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
 
         res.status(201).send({
@@ -80,8 +82,6 @@ export const loginController = async (req, res) => {
             },
             token
         })
-
-
     } catch (error) {
         console.log(error)
         res.status(404).send({

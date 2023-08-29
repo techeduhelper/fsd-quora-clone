@@ -1,7 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./../components/Navbar";
-import Footer from "../components/Footer";
 import { Toaster } from "react-hot-toast";
 const Layout = () => {
   return (
@@ -11,7 +10,6 @@ const Layout = () => {
         <Toaster position="top-center" />
         <Outlet />
       </div>
-      <Footer />
     </div>
   );
 };
