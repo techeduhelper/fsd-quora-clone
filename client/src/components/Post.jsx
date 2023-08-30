@@ -65,7 +65,7 @@ const Post = ({ CgProfile, closeModal }) => {
           <textarea
             name=""
             id=""
-            className="w-full h-48 outline-none py-3 px-2"
+            className="w-full h-48 outline-none py-3 px-2 border"
             placeholder="Say something..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}

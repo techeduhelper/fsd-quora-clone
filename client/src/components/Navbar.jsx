@@ -60,12 +60,12 @@ const Navbar = () => {
   console.log(searchResults);
   return (
     <>
-      <nav className="bg-[#ffffff] mobile:w-screen laptop:w-full object-fill right-0 sticky top-0 z-50 border-b-2 left-0">
+      <nav className="bg-[#ffffff] mobile:w-screen laptop:w-full object-fill right-0 sticky top-0 z-50 border-b-2 left-0 shadow-sm">
         <div className="nav-item-container flex flex-row items-center laptop:mx-56 py-1 mb-1 bg-[#ffffff] right-0">
           <div className="flex mobile:flex-col laptop:flex-row">
             <Link
               to={"/home"}
-              className="logo font-['Poppins', sans-serif] text-4xl font-bold laptop:text-[#b03d3b] mobile:bg-[#bc2e2b] laptop:bg-[#ffffff] mobile:w-screen laptop:w-auto mobile:text-[#ffffff] mobile:text-center laptop:text-auto mobile:py-4 laptop:py-0"
+              className="logo font-['Poppins', sans-serif] text-4xl font-bold laptop:text-[#c94543] mobile:bg-[#bc2e2b] laptop:bg-[#ffffff] mobile:w-screen laptop:w-auto mobile:text-[#ffffff] mobile:text-center laptop:text-auto mobile:py-4 laptop:py-0"
             >
               Quora
             </Link>

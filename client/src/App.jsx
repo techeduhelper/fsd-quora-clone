@@ -22,9 +22,9 @@ import Activity from "./user/Activity";
 import Question from "./user/Question";
 import Post from "./user/Post";
 
+axios.defaults.baseURL = `https://quora-backend-m4my.onrender.com`;
 
-axios.defaults.baseURL = `http://localhost:8080`;
-
+// https://quora-backend-m4my.onrender.com
 function App() {
   const [auth, setAuth] = useAuth();
   return (

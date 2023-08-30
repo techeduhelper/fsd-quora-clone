@@ -14,7 +14,7 @@ const customStyles = {
     maxWidth: "60%",
     height: "70%",
     padding: "1rem",
-    overflow: "auto ",
+    overflow: "auto",
     border: "none",
     borderRadius: "8px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
@@ -48,9 +48,24 @@ const Modaln = ({ isOpen, closeModal }) => {
     }
   };
 
+  const [switchmode, setSwitchmode] = useState(false);
+
+  const isLargeScreen = window.innerWidth >= 768;
+
+  const dynamicStyles = {
+    ...customStyles.content,
+    maxWidth: isLargeScreen ? "60%" : "95%",
+  };
   return (
     <>
-      <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={closeModal}
+        style={{
+          content: dynamicStyles,
+          overlay: customStyles.overlay,
+        }}
+      >
         <button
           className="hover:bg-gray-50 p-2 hover:rounded-full"
           onClick={closeModal}

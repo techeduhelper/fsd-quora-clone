@@ -137,128 +137,131 @@ const Login = () => {
   return (
     <>
       <Toaster position="top-center" />
-      <div className="login-container flex flex-col items-center laptop:h-[65vh] mobile:h-screen  mx-auto laptop:mt-32 mobile:mt-auto bg-[#ffffff] laptop:w-[40%] mobile:w-full rounded-sm">
-        <div className="qoura-logo text-4xl font-extrabold text-[#cf4644] outline-2 mt-5 underline">
-          Quora-Clone
-        </div>
-        {switchl ? (
-          <div className="register-container w-full px-4 text-center">
-            <form
-              className="flex flex-col gap-4 mt-16 mb-3"
-              onSubmit={resgisterUser}
-            >
-              <input
-                className="w-auto border border-gray-200 rounded-md p-2"
-                type="text"
-                name="name"
-                id="name"
-                required
-                placeholder="Enter your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <input
-                className="w-auto border border-gray-200 rounded-md p-2"
-                type="number"
-                name="mobileno"
-                id="mobileno"
-                required
-                placeholder="Enter your mobile no"
-                value={mobno}
-                onChange={(e) => setMobno(e.target.value)}
-              />
-              <input
-                className="w-auto border border-gray-200 rounded-md p-2"
-                type="email"
-                name="email"
-                id="email"
-                required
-                placeholder="Enter your email id"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <input
-                className="w-auto border border-gray-200 rounded-md p-2"
-                type="password"
-                name="password"
-                id="password"
-                required
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <label
-                className="text-md bg-stone-200 hover:bg-stone-300 py-2 text-center rounded-md"
-                htmlFor="fileUpload"
+      <div className="w-full laptop:h-full mobile:h-screen bg-[url('../assets/ilustrator.png')] flex items-center bg-contain">
+        <div className="login-container flex flex-col items-center laptop:h-[65vh] mobile:h-screen  mx-auto laptop:mt-32 mobile:mt-auto bg-[#ffffff] laptop:w-[40%] mobile:w-full rounded-sm border shadow-md ">
+          <div className="qoura-logo text-6xl font-extrabold text-[#cf4644] outline-2 mt-5 border-2 px-3 py-2 border-[#cf4644] rounded-md">
+            Quora-Clone
+          </div>
+          {switchl ? (
+            <div className="register-container w-full px-4 text-center">
+              <form
+                className="flex flex-col gap-4 mt-9 mb-3"
+                onSubmit={resgisterUser}
               >
                 <input
-                  type="file"
-                  onChange={(e) => setPhoto(e.target.files[0])}
+                  className="w-auto border border-gray-200 rounded-md p-2"
+                  type="text"
+                  name="name"
+                  id="name"
+                  required
+                  placeholder="Enter your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
-                Upload Profile Photo
-              </label>
-              <button
-                type="submit"
-                className="bg-[#982725] border rounded-md p-2 text-white"
+                <input
+                  className="w-auto border border-gray-200 rounded-md p-2"
+                  type="number"
+                  name="mobileno"
+                  id="mobileno"
+                  required
+                  placeholder="Enter your mobile no"
+                  value={mobno}
+                  onChange={(e) => setMobno(e.target.value)}
+                />
+                <input
+                  className="w-auto border border-gray-200 rounded-md p-2"
+                  type="email"
+                  name="email"
+                  id="email"
+                  required
+                  placeholder="Enter your email id"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                  className="w-auto border border-gray-200 rounded-md p-2"
+                  type="password"
+                  name="password"
+                  id="password"
+                  required
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <label
+                  className="text-md bg-stone-200 hover:bg-stone-300 py-2 text-center rounded-md"
+                  htmlFor="fileUpload"
+                >
+                  <input
+                    type="file"
+                    onChange={(e) => setPhoto(e.target.files[0])}
+                  />
+                  Upload Profile Photo
+                </label>
+                <button
+                  type="submit"
+                  className="bg-[#982725] border rounded-md p-2 text-white"
+                >
+                  {loading ? <Spinner /> : "Register"}
+                </button>
+              </form>
+              <span className="mt-5">
+                Already Have an account{" "}
+                <span
+                  onClick={handleSwitchLogin}
+                  className="text-red-500 cursor-pointer"
+                >
+                  Login Here
+                </span>{" "}
+              </span>
+            </div>
+          ) : (
+            <div className="login-container w-full px-4 mobile:mt-8 text-center">
+              <span className="font-serif">Created By @Maniruddin Khan</span>
+              <form
+                className="flex flex-col gap-5 mt-20 mb-3"
+                onSubmit={loginHandler}
               >
-                {loading ? <Spinner /> : "Register"}
-              </button>
-            </form>
-            <span className="mt-5">
-              Already Have an account{" "}
-              <span
-                onClick={handleSwitchLogin}
-                className="text-red-500 cursor-pointer"
-              >
-                Login Here
-              </span>{" "}
-            </span>
-          </div>
-        ) : (
-          <div className="login-container w-full px-4 mobile:mt-8 text-center">
-            <form
-              className="flex flex-col gap-5 mt-20 mb-3"
-              onSubmit={loginHandler}
-            >
-              <input
-                className="w-auto border border-gray-200 rounded-md p-2"
-                type="email"
-                name="lemail"
-                id="lemail"
-                required
-                placeholder="username"
-                value={lemail}
-                onChange={(e) => setLemail(e.target.value)}
-              />
-              <input
-                className="w-auto border border-gray-200 rounded-md p-2"
-                type="password"
-                name="lpassword"
-                id="lpassword"
-                required
-                placeholder="password"
-                value={lpassword}
-                onChange={(e) => setLpassword(e.target.value)}
-              />
+                <input
+                  className="w-auto border border-gray-200 rounded-md p-2"
+                  type="email"
+                  name="lemail"
+                  id="lemail"
+                  required
+                  placeholder="username"
+                  value={lemail}
+                  onChange={(e) => setLemail(e.target.value)}
+                />
+                <input
+                  className="w-auto border border-gray-200 rounded-md p-2"
+                  type="password"
+                  name="lpassword"
+                  id="lpassword"
+                  required
+                  placeholder="password"
+                  value={lpassword}
+                  onChange={(e) => setLpassword(e.target.value)}
+                />
 
-              <button
-                type="submit"
-                className="bg-[#cf4644] border rounded-md p-2 text-white"
-              >
-                {loadingLogin ? <Spinner /> : "LogIn"}
-              </button>
-            </form>
-            <span>
-              Not account! please{" "}
-              <span
-                onClick={handleSwitch}
-                className="text-red-500 cursor-pointer"
-              >
-                Register Here
-              </span>{" "}
-            </span>
-          </div>
-        )}
+                <button
+                  type="submit"
+                  className="bg-[#cb3e3b] border rounded-md p-2 text-white"
+                >
+                  {loadingLogin ? <Spinner /> : "LogIn"}
+                </button>
+              </form>
+              <span>
+                Not account! please{" "}
+                <span
+                  onClick={handleSwitch}
+                  className="text-red-500 cursor-pointer"
+                >
+                  Register Here
+                </span>{" "}
+              </span>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

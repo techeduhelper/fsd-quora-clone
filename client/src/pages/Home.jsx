@@ -47,6 +47,7 @@ const Home = () => {
   // useEfeect hooks
 
   useEffect(() => {
+    setLoading(true);
     async function fetchData() {
       try {
         const response1 = await axios.get("/quora/v1/post/all-post");
@@ -59,6 +60,7 @@ const Home = () => {
         combined.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
         setCombinedData(combined.reverse());
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -186,7 +188,7 @@ const Home = () => {
           ) : (
             <div className="grid grid-cols-1 gap-3 mt-3">
               {combinedData?.map((p) => (
-                <div className="bg-[#ffffff] rounded-sm" key={p._id}>
+                <div className="bg-[#ffffff] rounded-sm shadow-sm" key={p._id}>
                   <div className="profile-tag-container flex gap-3 items-center px-3 py-3">
                     {p?.author?.photo ? (
                       <img
